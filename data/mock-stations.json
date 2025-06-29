@@ -1,0 +1,168 @@
+{
+  "stations": [
+    {
+      "id": "radio-pop-hits",
+      "name": "Pop Hits FM",
+      "genre": "Pop / Top 40",
+      "description": "Los mejores éxitos del pop actual y clásicos que nunca pasan de moda. Música las 24 horas con los artistas más populares del momento.",
+      "generalDescription": "Pop Hits FM es la estación líder en música pop contemporánea, ofreciendo los últimos éxitos y clásicos atemporales las 24 horas del día. Nuestra programación incluye los artistas más populares del momento, entrevistas exclusivas y contenido musical de alta calidad.",
+      "hosts": "Con nuestro equipo de locutores profesionales: María González, Carlos Ruiz, Ana Martínez y Roberto Vega, quienes te acompañan durante todo el día con la mejor música y entretenimiento.",
+      "coverImage": "/placeholder.svg?height=400&width=400&text=Pop+Hits+FM",
+      "streamUrl": "https://stream.zenolive.com/2w81t82wx3duv",
+      "listeners": 15420,
+      "isActive": true,
+      "frequency": "101.5 FM",
+      "location": "Ciudad de México",
+      "website": "https://pophitsfm.com",
+      "social": {
+        "facebook": "https://facebook.com/pophitsfm",
+        "twitter": "https://twitter.com/pophitsfm",
+        "instagram": "https://instagram.com/pophitsfm",
+        "youtube": "https://youtube.com/pophitsfm",
+        "whatsapp": "+504-9876-5432"
+      },
+      "programming": [
+        {
+          "id": "segment-1",
+          "horaInicio": "06:00",
+          "horaFin": "10:00",
+          "segmento": "Mañanas Alegres",
+          "locutores": "Con María González y Carlos Ruiz"
+        },
+        {
+          "id": "segment-2",
+          "horaInicio": "10:00",
+          "horaFin": "14:00",
+          "segmento": "Hits del Mediodía",
+          "locutores": "Con Ana Martínez"
+        },
+        {
+          "id": "segment-3",
+          "horaInicio": "14:00",
+          "horaFin": "18:00",
+          "segmento": "Tarde de Éxitos",
+          "locutores": "Con Roberto Vega"
+        },
+        {
+          "id": "segment-4",
+          "horaInicio": "18:00",
+          "horaFin": "22:00",
+          "segmento": "Noche Pop",
+          "locutores": "Con María González"
+        }
+      ],
+      "programs": [
+        {
+          "name": "Morning Pop",
+          "time": "06:00 - 10:00",
+          "host": "María González"
+        },
+        {
+          "name": "Hits del Mediodía",
+          "time": "12:00 - 14:00",
+          "host": "Carlos Ruiz"
+        }
+      ],
+      "tags": ["pop", "hits", "actual", "música", "entretenimiento"]
+    },
+    {
+      "id": "radio-rock-clasico",
+      "name": "Rock Clásico 105",
+      "genre": "Rock Clásico",
+      "description": "El mejor rock de todos los tiempos. Desde los clásicos de los 70s y 80s hasta el rock alternativo de los 90s. Para los verdaderos amantes del rock.",
+      "generalDescription": "Rock Clásico 105 es el hogar del mejor rock de todas las épocas. Desde los legendarios clásicos de los años 70 y 80, hasta el rock alternativo de los 90s, ofrecemos una experiencia musical única para los verdaderos amantes del rock.",
+      "hosts": "Nuestro equipo está conformado por Roberto Metal, Ana Rocker, Diego Stone y Patricia Rock, expertos en la historia del rock que te llevarán en un viaje musical inolvidable.",
+      "coverImage": "/placeholder.svg?height=400&width=400&text=Rock+Clásico+105",
+      "streamUrl": "https://stream.revma.ihrhls.com/zc4472",
+      "listeners": 8750,
+      "isActive": true,
+      "frequency": "105.3 FM",
+      "location": "Guadalajara",
+      "website": "https://rockclasico105.com",
+      "social": {
+        "facebook": "https://facebook.com/rockclasico105",
+        "twitter": "https://twitter.com/rockclasico105",
+        "instagram": "https://instagram.com/rockclasico105",
+        "youtube": "https://youtube.com/rockclasico105"
+      },
+      "programming": [
+        {
+          "id": "segment-5",
+          "horaInicio": "08:00",
+          "horaFin": "12:00",
+          "segmento": "Rock Legends",
+          "locutores": "Con Roberto Metal"
+        },
+        {
+          "id": "segment-6",
+          "horaInicio": "20:00",
+          "horaFin": "24:00",
+          "segmento": "Noches de Rock",
+          "locutores": "Con Ana Rocker"
+        }
+      ],
+      "programs": [
+        {
+          "name": "Rock Legends",
+          "time": "08:00 - 12:00",
+          "host": "Roberto Metal"
+        },
+        {
+          "name": "Noches de Rock",
+          "time": "20:00 - 24:00",
+          "host": "Ana Rocker"
+        }
+      ],
+      "tags": ["rock", "clásico", "70s", "80s", "90s", "alternativo"]
+    },
+    {
+      "id": "radio-jazz-lounge",
+      "name": "Jazz Lounge",
+      "genre": "Jazz / Blues",
+      "description": "Ambiente relajado con el mejor jazz, blues y música instrumental. Perfecto para trabajar, estudiar o simplemente relajarse con buena música.",
+      "generalDescription": "Jazz Lounge ofrece un ambiente sofisticado y relajado con la mejor selección de jazz, blues y música instrumental. Nuestra programación está diseñada para crear el ambiente perfecto para trabajar, estudiar o simplemente disfrutar de momentos de tranquilidad.",
+      "hosts": "Diana Blue, Miguel Smooth, Sarah Jazz y Thomas Blues conforman nuestro selecto equipo de locutores especializados en jazz y blues, con amplio conocimiento de estos géneros musicales.",
+      "coverImage": "/placeholder.svg?height=400&width=400&text=Jazz+Lounge",
+      "streamUrl": "https://stream.revma.ihrhls.com/zc4422",
+      "listeners": 4320,
+      "isActive": true,
+      "frequency": "88.7 FM",
+      "location": "Monterrey",
+      "website": "https://jazzlounge.com",
+      "social": {
+        "facebook": "https://facebook.com/jazzlounge",
+        "twitter": "https://twitter.com/jazzlounge",
+        "instagram": "https://instagram.com/jazzlounge"
+      },
+      "programming": [
+        {
+          "id": "segment-7",
+          "horaInicio": "07:00",
+          "horaFin": "11:00",
+          "segmento": "Morning Jazz",
+          "locutores": "Con Diana Blue"
+        },
+        {
+          "id": "segment-8",
+          "horaInicio": "22:00",
+          "horaFin": "02:00",
+          "segmento": "Late Night Sessions",
+          "locutores": "Con Miguel Smooth"
+        }
+      ],
+      "programs": [
+        {
+          "name": "Morning Jazz",
+          "time": "07:00 - 11:00",
+          "host": "Diana Blue"
+        },
+        {
+          "name": "Late Night Sessions",
+          "time": "22:00 - 02:00",
+          "host": "Miguel Smooth"
+        }
+      ],
+      "tags": ["jazz", "blues", "instrumental", "relajante", "ambiente"]
+    }
+  ]
+}
