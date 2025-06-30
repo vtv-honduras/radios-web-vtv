@@ -13,7 +13,6 @@
       "isActive": true,
       "frequency": "101.5 FM",
       "location": "Ciudad de México",
-      "website": "https://pophitsfm.com",
       "social": {
         "facebook": "https://facebook.com/pophitsfm",
         "twitter": "https://twitter.com/pophitsfm",
@@ -75,10 +74,9 @@
       "coverImage": "/placeholder.svg?height=400&width=400&text=Rock+Clásico+105",
       "streamUrl": "https://stream.revma.ihrhls.com/zc4472",
       "listeners": 8750,
-      "isActive": true,
+      "isActive": false,
       "frequency": "105.3 FM",
       "location": "Guadalajara",
-      "website": "https://rockclasico105.com",
       "social": {
         "facebook": "https://facebook.com/rockclasico105",
         "twitter": "https://twitter.com/rockclasico105",
@@ -128,7 +126,6 @@
       "isActive": true,
       "frequency": "88.7 FM",
       "location": "Monterrey",
-      "website": "https://jazzlounge.com",
       "social": {
         "facebook": "https://facebook.com/jazzlounge",
         "twitter": "https://twitter.com/jazzlounge",

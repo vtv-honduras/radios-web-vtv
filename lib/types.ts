@@ -40,7 +40,7 @@ export interface ProgramSegment {
 }
 
 export interface AdminUser {
-  username: string
+  email: string
   password: string
   role: "admin"
 }

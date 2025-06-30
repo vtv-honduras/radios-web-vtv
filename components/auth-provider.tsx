@@ -1,14 +1,21 @@
 "use client"
 
 import { createContext, useContext, useState, useEffect, type ReactNode } from "react"
-import { isAuthenticated, getAuthUser, login as authLogin, logout as authLogout } from "@/lib/auth"
+import {
+  login as authLogin,
+  logout as authLogout,
+  forgotPassword as authForgotPassword,
+  checkActiveSession as authCheckActiveSession,
+} from "@/lib/auth" // Ajusta la ruta si es necesario
 import type { AdminUser } from "@/lib/types"
 
 type AuthContextType = {
   user: AdminUser | null
   isLoading: boolean
-  login: (username: string, password: string) => boolean
-  logout: () => void
+  login: (email: string, password: string) => Promise<{ authenticated: boolean }>
+  logout: () => Promise<{ success: boolean }>
+  forgotPassword: (email: string) => Promise<void>
+  checkActiveSession: () => Promise<{ uid: string | null }>
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -19,26 +26,47 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     // Verificar autenticación al cargar
-    if (isAuthenticated()) {
-      setUser(getAuthUser())
+    const checkSession = async () => {
+      const session = await authCheckActiveSession()
+      if (session?.uid) {
+        setUser({  email: session.email, password: "", role: "admin" }) // Ajusta los valores según corresponda
+      } else {
+        setUser(null)
+      }
+      setIsLoading(false)
     }
-    setIsLoading(false)
+    checkSession()
   }, [])
 
-  const login = (username: string, password: string): boolean => {
-    const success = authLogin(username, password)
-    if (success) {
-      setUser(getAuthUser())
+  const login = async (email: string, password: string) => {
+    const result = await authLogin(email, password)
+    if (result?.authenticated) {
+      setUser({ email, password: "", role: "admin" })
     }
-    return success
+    return result
   }
 
-  const logout = () => {
-    authLogout()
+  const logout = async () => {
+    const result = await authLogout()
     setUser(null)
+    return result
   }
 
-  return <AuthContext.Provider value={{ user, isLoading, login, logout }}>{children}</AuthContext.Provider>
+  const forgotPassword = async (email: string) => {
+    await authForgotPassword(email)
+  }
+
+  const checkActiveSession = async () => {
+    return await authCheckActiveSession()
+  }
+
+  return (
+    <AuthContext.Provider
+      value={{ user, isLoading, login, logout, forgotPassword, checkActiveSession }}
+    >
+      {children}
+    </AuthContext.Provider>
+  )
 }
 
 export function useAuth() {

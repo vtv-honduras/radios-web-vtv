@@ -25,26 +25,21 @@ export function Header() {
           </Link>
 
           <nav className="hidden md:flex items-center space-x-6">
-            <Link
-              href="/"
-              className="font-medium text-gray-700 dark:text-gray-300 hover:text-primary transition-colors"
-            >
-              Inicio
-            </Link>
+           
             <Link
               href="/contacto"
               className="font-medium text-gray-700 dark:text-gray-300 hover:text-primary transition-colors"
             >
               Contacto
             </Link>
-            {user ? (
+            {user && (
               <>
                 <Link
                   href="/admin"
                   className="font-medium text-gray-700 dark:text-gray-300 hover:text-primary transition-colors flex items-center gap-1"
                 >
                   <Settings size={16} />
-                  Admin
+                  Panel Admin
                 </Link>
                 <button
                   onClick={handleLogout}
@@ -54,14 +49,6 @@ export function Header() {
                   Salir
                 </button>
               </>
-            ) : (
-              <Link
-                href="/admin/login"
-                className="font-medium text-gray-700 dark:text-gray-300 hover:text-primary transition-colors flex items-center gap-1"
-              >
-                <Settings size={16} />
-                Admin
-              </Link>
             )}
             <ThemeToggle />
           </nav>
@@ -95,7 +82,7 @@ export function Header() {
               >
                 Contacto
               </Link>
-              {user ? (
+              {user && (
                 <>
                   <Link
                     href="/admin"
@@ -103,7 +90,7 @@ export function Header() {
                     onClick={() => setIsMenuOpen(false)}
                   >
                     <Settings size={16} />
-                    Admin
+                    Panel Admin
                   </Link>
                   <button
                     onClick={handleLogout}
@@ -113,15 +100,6 @@ export function Header() {
                     Salir
                   </button>
                 </>
-              ) : (
-                <Link
-                  href="/admin/login"
-                  className="font-medium text-gray-700 dark:text-gray-300 hover:text-primary transition-colors flex items-center gap-1"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  <Settings size={16} />
-                  Admin
-                </Link>
               )}
             </nav>
           </div>

@@ -65,7 +65,6 @@ export function StationDetails({ station }: StationDetailsProps) {
 
   return (
     <div className="max-w-4xl mx-auto pb-32">
-      {/* Banner publicitario superior */}
       <div className="mb-8">
         <AdBanner adSlot="1111111111" className="text-center" />
       </div>
@@ -81,7 +80,7 @@ export function StationDetails({ station }: StationDetailsProps) {
         </div>
 
         <div className="flex-1">
-          <h1 className="text-3xl font-bold mb-2 text-gray-900 dark:text-white">{station.name}</h1>
+          <h1 className="text-3xl font-bold mb-4 md:mb-2 text-gray-900 dark:text-white text-center md:text-left">{station.name}</h1>
           <p className="text-xl text-gray-600 dark:text-gray-300 mb-4">{station.genre}</p>
 
           {/* Información adicional */}
@@ -147,18 +146,6 @@ export function StationDetails({ station }: StationDetailsProps) {
             >
               <Heart size={20} fill={isFavorite ? "currentColor" : "none"} />
             </button>
-
-            {station.website && (
-              <Link
-                href={station.website}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-6 py-3 border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full flex items-center space-x-2"
-              >
-                <ExternalLink size={18} />
-                <span>Sitio Web</span>
-              </Link>
-            )}
           </div>
 
           {/* Tags */}
@@ -235,8 +222,8 @@ export function StationDetails({ station }: StationDetailsProps) {
       {/* Redes sociales */}
       {station.social && Object.keys(station.social).length > 0 && (
         <div className="mt-12">
-          <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">Síguenos en Redes Sociales</h2>
-          <div className="flex flex-wrap gap-4">
+          <h2 className="text-2xl font-semibold mb-5 text-gray-900 dark:text-white">Síguenos en Redes Sociales</h2>
+          <div className="flex flex-wrap gap-4 justify-center">
             {Object.entries(station.social).map(([platform, url]) => {
               if (!url) return null
               return (
@@ -256,5 +243,6 @@ export function StationDetails({ station }: StationDetailsProps) {
         </div>
       )}
     </div>
+   
   )
 }

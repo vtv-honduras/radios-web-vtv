@@ -1,70 +1,98 @@
-import type { AdminUser } from "./types"
+import {
+  signInWithEmailAndPassword,
+  sendPasswordResetEmail,
+  onAuthStateChanged,
+  signOut,
+} from "firebase/auth";
+import { auth } from "./firebase";
 
-// Credenciales de admin (en producción esto debería estar en una base de datos segura)
-const ADMIN_CREDENTIALS = {
-  username: "admin",
-  password: "admin123",
-  role: "admin" as const,
-}
-
-const AUTH_KEY = "radio_admin_auth"
-
-export function login(username: string, password: string): boolean {
-  if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
+const login = async (email: string, password: string) => {
+  try {
+    if (!email || !password) {
+      console.log("Debe de llenar los campos");
+      return { authenticated: false };
+    }
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+    const user_data = {
+      email: user.email,
+      uid: user.uid,
+    };
     if (typeof window !== "undefined") {
-      localStorage.setItem(
-        AUTH_KEY,
-        JSON.stringify({
-          username: ADMIN_CREDENTIALS.username,
-          role: ADMIN_CREDENTIALS.role,
-          loginTime: new Date().toISOString(),
-        }),
-      )
+      localStorage.setItem("user", JSON.stringify(user_data));
     }
-    return true
-  }
-  return false
-}
-
-export function logout(): void {
-  if (typeof window !== "undefined") {
-    localStorage.removeItem(AUTH_KEY)
-  }
-}
-
-export function isAuthenticated(): boolean {
-  if (typeof window === "undefined") return false
-
-  const auth = localStorage.getItem(AUTH_KEY)
-  if (!auth) return false
-
-  try {
-    const authData = JSON.parse(auth)
-    // Verificar si la sesión no ha expirado (24 horas)
-    const loginTime = new Date(authData.loginTime)
-    const now = new Date()
-    const hoursDiff = (now.getTime() - loginTime.getTime()) / (1000 * 60 * 60)
-
-    return hoursDiff < 24
-  } catch {
-    return false
-  }
-}
-
-export function getAuthUser(): AdminUser | null {
-  if (!isAuthenticated()) return null
-
-  const auth = localStorage.getItem(AUTH_KEY)
-  if (!auth) return null
-
-  try {
-    const authData = JSON.parse(auth)
-    return {
-      username: authData.username,
-      password: "", // No devolver la contraseña
-      role: authData.role,
+    console.log("Inicio de sesión exitoso");
+    if (typeof window !== "undefined") {
+      localStorage.setItem("init_login", "true");
     }
-  } catch {
-    return null
+    return { authenticated: true };
+  } catch (error: any) {
+    handleAuthError(error);
+    return { authenticated: false };
   }
-}
+};
+
+const forgotPassword = async (email: string) => {
+  try {
+    if (!email) {
+      console.log("Por favor, ingresa tu correo electrónico.");
+      return;
+    }
+    await sendPasswordResetEmail(auth, email);
+    console.log("Se ha enviado un enlace para restablecer tu contraseña a tu correo electrónico.");
+  } catch (error: any) {
+    console.log("Error al enviar el correo de recuperación:", error.message);
+  }
+};
+
+const checkActiveSession = () => {
+  return new Promise<{
+    email: string; uid: string | null 
+}>((resolve) => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        const user_data = {
+          email: user.email,
+          uid: user.uid,
+        };
+        if (typeof window !== "undefined") {
+          localStorage.setItem("user", JSON.stringify(user_data));
+          localStorage.setItem("init_login", "true");
+        }
+        resolve({ email: user.email ?? "", uid: user.uid ?? null });
+      } else {
+        console.log("No hay sesión activa.");
+        resolve({ email: "", uid: null });
+      }
+    });
+  });
+};
+
+const logout = async () => {
+  try {
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("user");
+      localStorage.removeItem("init_login");
+    }
+    await signOut(auth);
+    console.log("Sesión cerrada. Nos vemos pronto!");
+    return { success: true };
+  } catch (error: any) {
+    console.log("Error al cerrar sesión:", error.message);
+    return { success: false, error: error.message };
+  }
+};
+
+const handleAuthError = (error: any) => {
+  let errorMessage = "Error inesperado.";
+  if (error.code === "auth/invalid-credential") {
+    errorMessage = "Credenciales incorrectas.";
+  } else if (error.code === "auth/user-not-found") {
+    errorMessage = "Usuario no encontrado.";
+  } else if (error.code === "auth/invalid-email") {
+    errorMessage = "Correo electrónico no válido.";
+  }
+  console.log("Error de Autenticación:", errorMessage);
+};
+
+export { login, logout, forgotPassword, checkActiveSession };

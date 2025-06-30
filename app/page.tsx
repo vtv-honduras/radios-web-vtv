@@ -1,38 +1,38 @@
-"use client"
+"use client";
 
-import { RadioStationGrid } from "@/components/radio-station-grid"
-import { FeaturedStation } from "@/components/featured-station"
-import { AdBanner, AdNative } from "@/components/ad-banner"
-import { Footer } from "@/components/footer"
-import { useEffect, useState } from "react"
-import { getAllStations } from "@/lib/stations"
-import type { Station } from "@/lib/types"
-import { Loader2 } from "lucide-react"
-import { useAudio } from "@/components/audio-provider"
+import { RadioStationGrid } from "@/components/radio-station-grid";
+import { FeaturedStation } from "@/components/featured-station";
+import { AdBanner, AdNative } from "@/components/ad-banner";
+import { Footer } from "@/components/footer";
+import { useEffect, useState } from "react";
+import { getAllStations } from "@/lib/stations";
+import type { Station } from "@/lib/types";
+import { Loader2 } from "lucide-react";
+import { useAudio } from "@/components/audio-provider";
 
 export default function HomePage() {
-  const [stations, setStations] = useState<Station[]>([])
-  const [loading, setLoading] = useState(true)
-  const { setStations: setAudioStations } = useAudio()
+  const [stations, setStations] = useState<Station[]>([]);
+  const [loading, setLoading] = useState(true);
+  const { setStations: setAudioStations } = useAudio();
 
   useEffect(() => {
     // Asegurar scroll al top al cargar la página
-    window.scrollTo(0, 0)
+    window.scrollTo(0, 0);
 
     const fetchStations = async () => {
       try {
-        const fetchedStations = await getAllStations()
-        setStations(fetchedStations)
-        setAudioStations(fetchedStations) // Configurar estaciones en el contexto de audio
+        const fetchedStations = await getAllStations();
+        setStations(fetchedStations);
+        setAudioStations(fetchedStations); // Configurar estaciones en el contexto de audio
       } catch (error) {
-        console.error("Error fetching stations:", error)
+        console.error("Error fetching stations:", error);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    fetchStations()
-  }, [setAudioStations])
+    fetchStations();
+  }, [setAudioStations]);
 
   if (loading) {
     return (
@@ -40,49 +40,59 @@ export default function HomePage() {
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="flex items-center space-x-2">
             <Loader2 className="h-6 w-6 animate-spin text-gray-700 dark:text-gray-300" />
-            <span className="text-gray-700 dark:text-gray-300">Cargando estaciones...</span>
+            <span className="text-gray-700 dark:text-gray-300">
+              Cargando estaciones...
+            </span>
           </div>
         </div>
       </main>
-    )
+    );
   }
 
-  const featuredStation = stations[0]
+  const featuredStation = stations[0];
 
   return (
     <>
       <main className="container mx-auto px-4 py-8 pb-32">
-        <h1 className="text-3xl font-bold text-center mb-8 text-gray-900 dark:text-white">Radio Stream</h1>
+        <h1 className="text-3xl font-bold text-center mb-8 text-gray-900 dark:text-white">
+          Radio Stream
+        </h1>
 
         {featuredStation && (
-          <section className="mb-12">
-            <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">Estación Destacada</h2>
+          <section className="mb-12 w-full md:w-1/2 mx-auto">
+            <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">
+              Estación Destacada
+            </h2>
             <FeaturedStation station={featuredStation} />
           </section>
         )}
 
-        {/* Anuncio nativo entre secciones */}
-        <div className="mb-8">
-          <AdNative adSlot="0987654321" className="rounded-lg overflow-hidden" />
-        </div>
-
-        <section className="mb-16">
-          <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">Todas las Estaciones</h2>
+        {/* Anuncio nativo entre secciones
+          <div className="mb-8">
+            <AdNative adSlot="0987654321" className="rounded-lg overflow-hidden" />
+          </div>
+        */}
+        <section className="mb-16 w-full md:w-4/6 mx-auto">
+          <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">
+            Todas las Estaciones
+          </h2>
           <RadioStationGrid stations={stations} />
         </section>
 
-        {/* Separador visual antes de la publicidad */}
-        <div className="border-t border-gray-200 dark:border-gray-700 my-12"></div>
-
-        {/* Banner publicitario inferior con espaciado */}
+        {/* Separador visual antes de la publicidad 
+          <div className="border-t border-gray-200 dark:border-gray-700 my-12"></div>
+        */}
+        
+        {/* Banner publicitario inferior con espaciado
         <div className="mt-16 mb-8 pt-8">
           <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
             <AdBanner adSlot="1122334455" adFormat="horizontal" className="text-center" />
           </div>
         </div>
+         */}
       </main>
 
       <Footer />
     </>
-  )
+  );
 }
