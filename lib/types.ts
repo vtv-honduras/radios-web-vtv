@@ -4,11 +4,8 @@ export interface Station {
   genre: string
   coverImage: string
   streamUrl: string
-  listeners?: number
   description?: string
   isActive?: boolean
-  createdAt?: Date
-  updatedAt?: Date
   frequency?: string
   location?: string
   website?: string
@@ -19,16 +16,9 @@ export interface Station {
     youtube?: string
     whatsapp?: string
   }
-  programs?: Array<{
-    name: string
-    time: string
-    host: string
-  }>
   tags?: string[]
-  // Nuevos campos
-  generalDescription?: string
-  hosts?: string
   programming?: ProgramSegment[]
+  locutores?: string
 }
 
 export interface ProgramSegment {

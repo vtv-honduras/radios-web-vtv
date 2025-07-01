@@ -1,21 +1,16 @@
-import mockStations from "@/data/mock-stations.json"
 import type { Station } from "./types"
+import { getAllStations } from "./station.service"
 
-export function getMockStations(): Station[] {
-  return mockStations.stations.map((station) => ({
+export async function getMockStations(): Promise<Station[]> {
+  const data = await getAllStations()
+  return data.map(station => ({
     ...station,
-    createdAt: new Date(),
-    updatedAt: new Date(),
+    isActive: station.isActive !== false
   }))
 }
 
-export function getMockStationById(id: string): Station | null {
-  const station = mockStations.stations.find((s) => s.id === id)
-  if (!station) return null
-
-  return {
-    ...station,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  }
+export async function getMockStationById(id: string): Promise<Station | null> {
+  const stations = await getAllStations()
+  const station = stations.find(s => s.id === id)
+  return station ? { ...station } : null
 }

@@ -99,9 +99,6 @@ function AdminPageContent() {
                   <div>
                     <h3 className="font-semibold text-lg text-gray-900 dark:text-white">{station.name}</h3>
                     <p className="text-gray-500 dark:text-gray-400">{station.genre}</p>
-                    <p className="text-sm text-gray-400 dark:text-gray-500">
-                      {station.listeners?.toLocaleString() || "0"} oyentes
-                    </p>
                     {station.programming && (
                       <p className="text-xs text-primary">
                         {station.programming.length} segmento{station.programming.length !== 1 ? "s" : ""} de
@@ -112,13 +109,6 @@ function AdminPageContent() {
                 </div>
 
                 <div className="flex items-center space-x-2">
-                  <Link
-                    href={`/admin/programacion/${station.id}`}
-                    className="p-2 text-purple-600 hover:bg-purple-50 dark:hover:bg-purple-900/20 rounded-lg"
-                    title="Gestionar Programación"
-                  >
-                    <Clock size={18} />
-                  </Link>
                   <Link
                     href={`/admin/editar-estacion/${station.id}`}
                     className="p-2 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg"

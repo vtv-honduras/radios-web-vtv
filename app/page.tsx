@@ -5,7 +5,7 @@ import { FeaturedStation } from "@/components/featured-station";
 import { AdBanner, AdNative } from "@/components/ad-banner";
 import { Footer } from "@/components/footer";
 import { useEffect, useState } from "react";
-import { getAllStations } from "@/lib/stations";
+import { getAllStations } from "@/lib/station.service";
 import type { Station } from "@/lib/types";
 import { Loader2 } from "lucide-react";
 import { useAudio } from "@/components/audio-provider";
@@ -16,14 +16,14 @@ export default function HomePage() {
   const { setStations: setAudioStations } = useAudio();
 
   useEffect(() => {
-    // Asegurar scroll al top al cargar la página
     window.scrollTo(0, 0);
 
     const fetchStations = async () => {
       try {
         const fetchedStations = await getAllStations();
+        console.log("Estaciones obtenidas:", fetchedStations);
         setStations(fetchedStations);
-        setAudioStations(fetchedStations); // Configurar estaciones en el contexto de audio
+        setAudioStations(fetchedStations);
       } catch (error) {
         console.error("Error fetching stations:", error);
       } finally {
@@ -57,7 +57,7 @@ export default function HomePage() {
         </h1>
 
         {featuredStation && (
-          <section className="mb-12 w-full md:w-1/2 mx-auto">
+          <section className="mb-12 w-full lg:w-1/2 md:w-3/4 mx-auto">
             <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">
               Estación Destacada
             </h2>

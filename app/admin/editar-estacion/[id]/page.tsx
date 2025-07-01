@@ -4,38 +4,40 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowLeft, Save, Loader2 } from "lucide-react";
-import { useParams } from "next/navigation";
+import { ArrowLeft, Save, Loader2, Plus, Trash2 } from "lucide-react";
 
 import { getStationById, updateStation } from "@/lib/station.service";
-import type { Station } from "@/lib/types";
+import type { Station, ProgramSegment } from "@/lib/types";
 import { ProtectedRoute } from "@/components/protected-route";
 
 function EditStationPageContent({ params }: { params: { id: string } }) {
   const router = useRouter();
-
   const [loading, setLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
   const [station, setStation] = useState<Station | null>(null);
+  const [programming, setProgramming] = useState<ProgramSegment[]>([]);
   const [newCoverImageFile, setNewCoverImageFile] = useState<File | null>(null);
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<Omit<Station, "id">>({
     name: "",
     genre: "",
     coverImage: "",
     streamUrl: "",
-    listeners: 0,
     description: "",
-    generalDescription: "",
-    hosts: "",
+    isActive: true,
     frequency: "",
     location: "",
     website: "",
-    facebook: "",
-    twitter: "",
-    instagram: "",
-    youtube: "",
-    whatsapp: "",
+    social: {
+      facebook: "",
+      twitter: "",
+      instagram: "",
+      youtube: "",
+      whatsapp: "",
+    },
+    tags: [],
+    programming: [],
+    locutores: "",
   });
 
   useEffect(() => {
@@ -49,18 +51,21 @@ function EditStationPageContent({ params }: { params: { id: string } }) {
             genre: fetchedStation.genre,
             coverImage: fetchedStation.coverImage || "",
             streamUrl: fetchedStation.streamUrl,
-            listeners: fetchedStation.listeners || 0,
             description: fetchedStation.description || "",
-            generalDescription: fetchedStation.generalDescription || "",
-            hosts: fetchedStation.hosts || "",
+            isActive: fetchedStation.isActive ?? true,
             frequency: fetchedStation.frequency || "",
             location: fetchedStation.location || "",
             website: fetchedStation.website || "",
-            facebook: fetchedStation.social?.facebook || "",
-            twitter: fetchedStation.social?.twitter || "",
-            instagram: fetchedStation.social?.instagram || "",
-            youtube: fetchedStation.social?.youtube || "",
-            whatsapp: fetchedStation.social?.whatsapp || "",
+            social: {
+              facebook: fetchedStation.social?.facebook || "",
+              twitter: fetchedStation.social?.twitter || "",
+              instagram: fetchedStation.social?.instagram || "",
+              youtube: fetchedStation.social?.youtube || "",
+              whatsapp: fetchedStation.social?.whatsapp || "",
+            },
+            tags: fetchedStation.tags || [],
+            programming: fetchedStation.programming || [],
+            locutores: fetchedStation.locutores || "",
           });
         }
       } catch (error) {
@@ -78,33 +83,21 @@ function EditStationPageContent({ params }: { params: { id: string } }) {
     setLoading(true);
 
     try {
-      const updateData = {
+      const updateData: Station = {
+        ...station!,
         ...formData,
         social: {
-          facebook: formData.facebook || undefined,
-          twitter: formData.twitter || undefined,
-          instagram: formData.instagram || undefined,
-          youtube: formData.youtube || undefined,
-          whatsapp: formData.whatsapp || undefined,
+          facebook: formData.social?.facebook || "",
+          twitter: formData.social?.twitter || "",
+          instagram: formData.social?.instagram || "",
+          youtube: formData.social?.youtube || "",
+          whatsapp: formData.social?.whatsapp || "",
         },
       };
 
-      const {
-        facebook,
-        twitter,
-        instagram,
-        youtube,
-        whatsapp,
-        ...stationData
-      } = updateData;
-      if (params.id == null || params.id == undefined) {
-        alert("ID de estación no válido");
-        return;
-      }
-
       await updateStation(
         params.id,
-        { ...stationData, social: updateData.social },
+        updateData,
         newCoverImageFile || undefined
       );
 
@@ -123,7 +116,7 @@ function EditStationPageContent({ params }: { params: { id: string } }) {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: name === "listeners" ? Number.parseInt(value) || 0 : value,
+      [name]: value,
     }));
   };
 
@@ -150,14 +143,48 @@ function EditStationPageContent({ params }: { params: { id: string } }) {
       return;
     }
 
-    // Guardar imagen para subida
     setNewCoverImageFile(file);
-
-    // Mostrar preview local
     setFormData((prev) => ({
       ...prev,
       coverImage: URL.createObjectURL(file),
     }));
+  };
+
+  const handleAddSegment = () => {
+    setFormData((prev) => ({
+      ...prev,
+      programming: [
+        ...(prev.programming || []),
+        {
+          id: crypto.randomUUID(),
+          horaInicio: "",
+          horaFin: "",
+          segmento: "",
+          locutores: "",
+        },
+      ],
+    }));
+  };
+
+  const handleSegmentChange = (
+    index: number,
+    field: keyof ProgramSegment,
+    value: string
+  ) => {
+    setFormData((prev) => {
+      const updated = [...(prev.programming || [])];
+      updated[index] = { ...updated[index], [field]: value };
+      return { ...prev, programming: updated };
+    });
+  };
+
+  // Cambia handleRemoveSegment:
+  const handleRemoveSegment = (index: number) => {
+    setFormData((prev) => {
+      const updated = [...(prev.programming || [])];
+      updated.splice(index, 1);
+      return { ...prev, programming: updated };
+    });
   };
 
   if (initialLoading) {
@@ -209,6 +236,7 @@ function EditStationPageContent({ params }: { params: { id: string } }) {
               Información Básica
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Nombre Estacion */}
               <div>
                 <label
                   htmlFor="name"
@@ -226,7 +254,7 @@ function EditStationPageContent({ params }: { params: { id: string } }) {
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 />
               </div>
-
+              {/* Género */}
               <div>
                 <label
                   htmlFor="genre"
@@ -244,7 +272,7 @@ function EditStationPageContent({ params }: { params: { id: string } }) {
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 />
               </div>
-
+              {/* URL de Stream */}
               <div>
                 <label
                   htmlFor="streamUrl"
@@ -262,7 +290,7 @@ function EditStationPageContent({ params }: { params: { id: string } }) {
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 />
               </div>
-
+              {/* Frecuencia */}
               <div>
                 <label
                   htmlFor="frequency"
@@ -280,7 +308,7 @@ function EditStationPageContent({ params }: { params: { id: string } }) {
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 />
               </div>
-
+              {/* Ubicación */}
               <div>
                 <label
                   htmlFor="location"
@@ -298,25 +326,7 @@ function EditStationPageContent({ params }: { params: { id: string } }) {
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 />
               </div>
-
-              <div>
-                <label
-                  htmlFor="listeners"
-                  className="block text-sm font-medium mb-2 text-gray-900 dark:text-white"
-                >
-                  Oyentes
-                </label>
-                <input
-                  type="number"
-                  id="listeners"
-                  name="listeners"
-                  value={formData.listeners}
-                  onChange={handleChange}
-                  min="0"
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                />
-              </div>
-
+              {/* Sitio Web */}
               <div className="md:col-span-2">
                 <label
                   htmlFor="website"
@@ -331,6 +341,23 @@ function EditStationPageContent({ params }: { params: { id: string } }) {
                   value={formData.website}
                   onChange={handleChange}
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                />
+              </div>
+              {/* Descripción */}
+              <div className="md:col-span-2">
+                <label
+                  htmlFor="description"
+                  className="block text-sm font-medium mb-2 text-gray-900 dark:text-white"
+                >
+                  Descripción
+                </label>
+                <textarea
+                  id="description"
+                  name="description"
+                  rows={3}
+                  value={formData.description}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border rounded-lg bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent"
                 />
               </div>
             </div>
@@ -372,61 +399,110 @@ function EditStationPageContent({ params }: { params: { id: string } }) {
 
           {/* Descripciones */}
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
-            <h2 className="text-xl font-semibold mb-6 text-gray-900 dark:text-white">
-              Descripciones
-            </h2>
-            <div className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Locutores */}
               <div>
                 <label
-                  htmlFor="description"
-                  className="block text-sm font-medium mb-2 text-gray-900 dark:text-white"
-                >
-                  Descripción Corta
-                </label>
-                <textarea
-                  id="description"
-                  name="description"
-                  value={formData.description}
-                  onChange={handleChange}
-                  rows={3}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                />
-              </div>
-
-              <div>
-                <label
-                  htmlFor="generalDescription"
-                  className="block text-sm font-medium mb-2 text-gray-900 dark:text-white"
-                >
-                  Descripción General
-                </label>
-                <textarea
-                  id="generalDescription"
-                  name="generalDescription"
-                  value={formData.generalDescription}
-                  onChange={handleChange}
-                  rows={4}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                />
-              </div>
-
-              <div>
-                <label
-                  htmlFor="hosts"
+                  htmlFor="locutores"
                   className="block text-sm font-medium mb-2 text-gray-900 dark:text-white"
                 >
                   Locutores
                 </label>
-                <textarea
-                  id="hosts"
-                  name="hosts"
-                  value={formData.hosts}
+                <input
+                  id="locutores"
+                  name="locutores"
+                  type="text"
+                  value={formData.locutores}
                   onChange={handleChange}
-                  rows={2}
-                  placeholder="ej: Con nuestro equipo de locutores: Juan Horlando, Xiomara Castro..."
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  className="w-full px-3 py-2 border rounded-lg bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent"
                 />
               </div>
+              {/* Tags */}
+              <div>
+                <label
+                  htmlFor="tags"
+                  className="block text-sm font-medium mb-2 text-gray-900 dark:text-white"
+                >
+                  Etiquetas
+                </label>
+                <input
+                  id="tags"
+                  type="text"
+                  placeholder="pop, latina, reggaeton"
+                  value={formData.tags?.join(",") ?? ""}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      tags: e.target.value.split(",").map((tag) => tag.trim()),
+                    }))
+                  }
+                  className="w-full px-3 py-2 border rounded-lg bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent"
+                />
+              </div>
+            </div>
+
+            {/* Programación */}
+            <div className="mt-5">
+              <h3 className="font-semibold text-lg text-gray-900 dark:text-white">
+                Programación
+              </h3>
+              {formData.programming?.map((segment, index) => (
+                <div
+                  key={segment.id}
+                  className="grid grid-cols-1 md:grid-cols-5 gap-2 items-center mb-4"
+                >
+                  <input
+                    type="text"
+                    placeholder="Segmento"
+                    value={segment.segmento}
+                    onChange={(e) =>
+                      handleSegmentChange(index, "segmento", e.target.value)
+                    }
+                    className="px-2 py-1 border rounded-md"
+                  />
+                  <input
+                    type="time"
+                    placeholder="Hora Inicio"
+                    value={segment.horaInicio}
+                    onChange={(e) =>
+                      handleSegmentChange(index, "horaInicio", e.target.value)
+                    }
+                    className="px-2 py-1 border rounded-md"
+                  />
+                  <input
+                    type="time"
+                    placeholder="Hora Fin"
+                    value={segment.horaFin}
+                    onChange={(e) =>
+                      handleSegmentChange(index, "horaFin", e.target.value)
+                    }
+                    className="px-2 py-1 border rounded-md"
+                  />
+                  <input
+                    type="text"
+                    placeholder="Locutores"
+                    value={segment.locutores}
+                    onChange={(e) =>
+                      handleSegmentChange(index, "locutores", e.target.value)
+                    }
+                    className="px-2 py-1 border rounded-md"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveSegment(index)}
+                    className="text-red-500"
+                  >
+                    <Trash2 size={18} />
+                  </button>
+                </div>
+              ))}
+              <button
+                type="button"
+                onClick={handleAddSegment}
+                className="flex items-center text-blue-600 mt-2"
+              >
+                <Plus size={16} className="mr-1" /> Agregar segmento
+              </button>
             </div>
           </div>
 
@@ -447,8 +523,16 @@ function EditStationPageContent({ params }: { params: { id: string } }) {
                   type="url"
                   id="facebook"
                   name="facebook"
-                  value={formData.facebook}
-                  onChange={handleChange}
+                  value={formData.social?.facebook}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      social: {
+                        ...prev.social,
+                        facebook: e.target.value,
+                      },
+                    }))
+                  }
                   placeholder="https://facebook.com/tu-estacion"
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 />
@@ -465,13 +549,12 @@ function EditStationPageContent({ params }: { params: { id: string } }) {
                   type="url"
                   id="twitter"
                   name="twitter"
-                  value={formData.twitter}
+                  value={formData.social?.twitter}
                   onChange={handleChange}
                   placeholder="https://twitter.com/tu-estacion"
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 />
               </div>
-
               <div>
                 <label
                   htmlFor="instagram"
@@ -483,8 +566,16 @@ function EditStationPageContent({ params }: { params: { id: string } }) {
                   type="url"
                   id="instagram"
                   name="instagram"
-                  value={formData.instagram}
-                  onChange={handleChange}
+                  value={formData.social?.instagram}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      social: {
+                        ...prev.social,
+                        instagram: e.target.value,
+                      },
+                    }))
+                  }
                   placeholder="https://instagram.com/tu-estacion"
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 />
@@ -495,20 +586,27 @@ function EditStationPageContent({ params }: { params: { id: string } }) {
                   htmlFor="youtube"
                   className="block text-sm font-medium mb-2 text-gray-900 dark:text-white"
                 >
-                  YouTube
+                  Youtube
                 </label>
                 <input
                   type="url"
                   id="youtube"
                   name="youtube"
-                  value={formData.youtube}
-                  onChange={handleChange}
+                  value={formData.social?.youtube}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      social: {
+                        ...prev.social,
+                        youtube: e.target.value,
+                      },
+                    }))
+                  }
                   placeholder="https://youtube.com/tu-estacion"
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 />
               </div>
-
-              <div className="md:col-span-2">
+              <div>
                 <label
                   htmlFor="whatsapp"
                   className="block text-sm font-medium mb-2 text-gray-900 dark:text-white"
@@ -519,7 +617,7 @@ function EditStationPageContent({ params }: { params: { id: string } }) {
                   type="text"
                   id="whatsapp"
                   name="whatsapp"
-                  value={formData.whatsapp}
+                  value={formData.social?.whatsapp}
                   onChange={handleChange}
                   placeholder="+504-9876-5432"
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"

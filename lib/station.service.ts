@@ -10,7 +10,6 @@ import {
 import { ref as storageRef, deleteObject, uploadBytes, getDownloadURL } from "firebase/storage"
 import {db, storage} from "./firebase"
 import type { Station } from "./types"
-import { getMockStations } from "./mock-data"
 
 const COLLECTION_NAME = "estaciones"
 
@@ -70,7 +69,7 @@ export async function getStationById(id: string): Promise<Station | null> {
 }
 
 export async function createStation(
-  station: Omit<Station, "id" | "createdAt" | "updatedAt">,
+  station: Omit<Station, "id" | "isActive">,
   coverImageFile?: File
 ): Promise<string> {
   const newId = `station-${Date.now()}`
@@ -84,8 +83,6 @@ export async function createStation(
     ...station,
     id: newId,
     coverImage: coverImageUrl,
-    createdAt: new Date(),
-    updatedAt: new Date(),
     isActive: true,
   }
 

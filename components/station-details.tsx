@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import type { Station } from "@/lib/types"
+import type { Station } from "@/lib/types";
 import {
   Play,
   Pause,
@@ -16,52 +16,52 @@ import {
   Instagram,
   Youtube,
   MessageCircle,
-} from "lucide-react"
-import Image from "next/image"
-import { useAudio } from "./audio-provider"
-import { useState } from "react"
-import { AdBanner, AdNative } from "./ad-banner"
-import Link from "next/link"
+} from "lucide-react";
+import Image from "next/image";
+import { useAudio } from "./audio-provider";
+import { useState } from "react";
+import { AdBanner, AdNative } from "./ad-banner";
+import Link from "next/link";
 
 interface StationDetailsProps {
-  station: Station
+  station: Station;
 }
 
 export function StationDetails({ station }: StationDetailsProps) {
-  const { currentStation, isPlaying, play, pause, error } = useAudio()
-  const [isFavorite, setIsFavorite] = useState(false)
+  const { currentStation, isPlaying, play, pause, error } = useAudio();
+  const [isFavorite, setIsFavorite] = useState(false);
 
-  const isCurrentlyPlaying = currentStation?.id === station.id && isPlaying
-  const hasError = error && currentStation?.id === station.id
+  const isCurrentlyPlaying = currentStation?.id === station.id && isPlaying;
+  const hasError = error && currentStation?.id === station.id;
 
   const handlePlayPause = () => {
     if (isCurrentlyPlaying) {
-      pause()
+      pause();
     } else {
-      play(station)
+      play(station);
     }
-  }
+  };
 
   const toggleFavorite = () => {
-    setIsFavorite(!isFavorite)
-  }
+    setIsFavorite(!isFavorite);
+  };
 
   const getSocialIcon = (platform: string) => {
     switch (platform) {
       case "facebook":
-        return <Facebook size={20} />
+        return <Facebook size={20} />;
       case "twitter":
-        return <Twitter size={20} />
+        return <Twitter size={20} />;
       case "instagram":
-        return <Instagram size={20} />
+        return <Instagram size={20} />;
       case "youtube":
-        return <Youtube size={20} />
+        return <Youtube size={20} />;
       case "whatsapp":
-        return <MessageCircle size={20} />
+        return <MessageCircle size={20} />;
       default:
-        return <ExternalLink size={20} />
+        return <ExternalLink size={20} />;
     }
-  }
+  };
 
   return (
     <div className="max-w-4xl mx-auto pb-32">
@@ -75,13 +75,17 @@ export function StationDetails({ station }: StationDetailsProps) {
             src={station.coverImage || "/placeholder.svg?height=400&width=400"}
             alt={station.name}
             fill
-            className="object-cover"
+            className="object-fill"
           />
         </div>
 
         <div className="flex-1">
-          <h1 className="text-3xl font-bold mb-4 md:mb-2 text-gray-900 dark:text-white text-center md:text-left">{station.name}</h1>
-          <p className="text-xl text-gray-600 dark:text-gray-300 mb-4">{station.genre}</p>
+          <h1 className="text-3xl font-bold mb-4 md:mb-2 text-gray-900 dark:text-white text-center md:text-left">
+            {station.name}
+          </h1>
+          <p className="text-xl text-gray-600 dark:text-gray-300 mb-4">
+            {station.genre}
+          </p>
 
           {/* Información adicional */}
           <div className="flex flex-wrap gap-4 mb-6">
@@ -98,11 +102,6 @@ export function StationDetails({ station }: StationDetailsProps) {
                 <span>{station.location}</span>
               </div>
             )}
-
-            <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400">
-              <Users size={16} />
-              <span>{station.listeners?.toLocaleString() || "0"} oyentes</span>
-            </div>
 
             <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400">
               <Clock size={16} />
@@ -134,18 +133,6 @@ export function StationDetails({ station }: StationDetailsProps) {
                 </>
               )}
             </button>
-
-            <button
-              onClick={toggleFavorite}
-              className={`p-3 rounded-full border ${
-                isFavorite
-                  ? "bg-red-50 border-red-200 text-red-500 dark:bg-red-900/20 dark:border-red-800"
-                  : "border-gray-300 dark:border-gray-600"
-              }`}
-              aria-label={isFavorite ? "Quitar de favoritos" : "Añadir a favoritos"}
-            >
-              <Heart size={20} fill={isFavorite ? "currentColor" : "none"} />
-            </button>
           </div>
 
           {/* Tags */}
@@ -173,25 +160,32 @@ export function StationDetails({ station }: StationDetailsProps) {
 
       {/* Descripción General */}
       <div className="mt-12">
-        <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">Acerca de esta estación</h2>
+        <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">
+          Acerca de esta estación
+        </h2>
         <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-          {station.generalDescription ||
-            station.description ||
+          {station.description ||
             "Esta estación de radio ofrece una selección de música las 24 horas del día, los 7 días de la semana. Sintoniza para disfrutar de la mejor programación musical y contenido exclusivo."}
         </p>
 
         {/* Locutores generales */}
-        {station.hosts && (
+        {station.locutores && (
           <div className="mt-4">
-            <h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-white">Nuestros Locutores</h3>
-            <p className="text-gray-600 dark:text-gray-300">{station.hosts}</p>
+            <h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-white">
+              Nuestros Locutores
+            </h3>
+            <p className="text-gray-600 dark:text-gray-300">
+              {station.locutores}
+            </p>
           </div>
         )}
       </div>
 
       {/* Sección de Programación - Solo visualización */}
       <div className="mt-12">
-        <h2 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white">Programación</h2>
+        <h2 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white">
+          Programación
+        </h2>
 
         {/* Lista de segmentos - Solo lectura */}
         {station.programming && station.programming.length > 0 ? (
@@ -206,9 +200,15 @@ export function StationDetails({ station }: StationDetailsProps) {
                     {segment.horaInicio} – {segment.horaFin}
                   </span>
                   <span className="text-gray-400">|</span>
-                  <span className="font-semibold">Segmento: {segment.segmento}</span>
+                  <span className="font-semibold">
+                    Segmento: {segment.segmento}
+                  </span>
                 </div>
-                {segment.locutores && <p className="text-gray-500 dark:text-gray-400 text-sm">{segment.locutores}</p>}
+                {segment.locutores && (
+                  <p className="text-gray-500 dark:text-gray-400 text-sm">
+                    {segment.locutores}
+                  </p>
+                )}
               </div>
             ))}
           </div>
@@ -220,12 +220,14 @@ export function StationDetails({ station }: StationDetailsProps) {
       </div>
 
       {/* Redes sociales */}
-      {station.social && Object.keys(station.social).length > 0 && (
+      {station.social && Object.values(station.social).some((url) => !!url) && (
         <div className="mt-12">
-          <h2 className="text-2xl font-semibold mb-5 text-gray-900 dark:text-white">Síguenos en Redes Sociales</h2>
+          <h2 className="text-2xl font-semibold mb-5 text-gray-900 dark:text-white">
+            Síguenos en Redes Sociales
+          </h2>
           <div className="flex flex-wrap gap-4 justify-center">
             {Object.entries(station.social).map(([platform, url]) => {
-              if (!url) return null
+              if (!url) return null;
               return (
                 <Link
                   key={platform}
@@ -237,12 +239,11 @@ export function StationDetails({ station }: StationDetailsProps) {
                   {getSocialIcon(platform)}
                   <span className="capitalize">{platform}</span>
                 </Link>
-              )
+              );
             })}
           </div>
         </div>
       )}
     </div>
-   
-  )
+  );
 }

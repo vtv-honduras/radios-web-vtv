@@ -35,9 +35,7 @@ export async function createStation(station: Omit<Station, "id" | "createdAt" | 
   const newStation: Station = {
     ...station,
     id: `station-${Date.now()}`,
-    isActive: true,
-    createdAt: new Date(),
-    updatedAt: new Date(),
+    isActive: true
   }
 
   stations.push(newStation)
@@ -59,8 +57,7 @@ export async function updateStation(id: string, stationData: Partial<Station>): 
 
   stations[index] = {
     ...stations[index],
-    ...stationData,
-    updatedAt: new Date(),
+    ...stationData
   }
 
   if (typeof window !== "undefined") {
@@ -78,8 +75,7 @@ export async function deleteStation(id: string): Promise<void> {
 
   stations[index] = {
     ...stations[index],
-    isActive: false,
-    updatedAt: new Date(),
+    isActive: false
   }
 
   if (typeof window !== "undefined") {
@@ -87,17 +83,7 @@ export async function deleteStation(id: string): Promise<void> {
   }
 }
 
-// Función para convertir archivo a base64
-export function fileToBase64(file: File): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader()
-    reader.readAsDataURL(file)
-    reader.onload = () => resolve(reader.result as string)
-    reader.onerror = (error) => reject(error)
-  })
-}
 
-// Función para validar archivos de imagen
 export function validateImageFile(file: File): boolean {
   const validTypes = ["image/jpeg", "image/jpg", "image/png", "image/gif", "image/webp"]
   const maxSize = 5 * 1024 * 1024 // 5MB

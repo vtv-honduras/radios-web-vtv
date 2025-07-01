@@ -36,7 +36,7 @@ export function RadioStationCard({ station }: RadioStationCardProps) {
           src={station.coverImage || "/placeholder.svg?height=300&width=300"}
           alt={station.name}
           fill
-          className="object-cover"
+          className="h-[95%] w-auto"
         />
 
         {/* Indicador de reproducción activa */}
@@ -51,10 +51,6 @@ export function RadioStationCard({ station }: RadioStationCardProps) {
       <div className="p-4">
         <h3 className="font-medium text-gray-900 dark:text-white truncate mb-1">{station.name}</h3>
         <p className="text-sm text-gray-600 dark:text-gray-400 truncate mb-2">{station.genre}</p>
-
-        {station.listeners && (
-          <p className="text-xs text-gray-500 dark:text-gray-500 mb-3">{station.listeners.toLocaleString()} oyentes</p>
-        )}
 
         {/* Mensaje de error */}
         {hasError && (

@@ -37,7 +37,7 @@ export function FeaturedStation({ station }: FeaturedStationProps) {
             src={station.coverImage || "/placeholder.svg?height=400&width=400"}
             alt={station.name}
             fill
-            className="object-cover"
+            className="h-[85%] w-auto"
           />
 
           {/* Indicador de reproducción activa */}
@@ -58,11 +58,6 @@ export function FeaturedStation({ station }: FeaturedStationProps) {
             <p className="text-gray-600 dark:text-gray-300 mb-4">
               {station.genre}
             </p>
-
-            <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400 mb-6">
-              <Users size={16} />
-              <span>{station.listeners?.toLocaleString() || "0"} oyentes</span>
-            </div>
 
             {hasError && (
               <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 rounded-md flex items-center gap-2 border border-red-200 dark:border-red-800">
