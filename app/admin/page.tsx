@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { getAllStations, deleteStation } from "@/lib/stations"
+import { getAllStations, deleteStation } from "@/lib/station.service"
 import type { Station } from "@/lib/types"
 import { Plus, Edit, Trash2, Loader2, Clock } from "lucide-react"
 import Link from "next/link"
@@ -24,6 +24,7 @@ function AdminPageContent() {
   const fetchStations = async () => {
     try {
       const fetchedStations = await getAllStations()
+      console.log("Estaciones obtenidas:", fetchedStations)
       setStations(fetchedStations.filter((s) => s.isActive !== false))
     } catch (error) {
       console.error("Error fetching stations:", error)

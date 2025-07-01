@@ -36,13 +36,11 @@ export default function HomePage() {
 
   if (loading) {
     return (
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto px-4 py-8 ">
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="flex items-center space-x-2">
             <Loader2 className="h-6 w-6 animate-spin text-gray-700 dark:text-gray-300" />
-            <span className="text-gray-700 dark:text-gray-300">
-              Cargando estaciones...
-            </span>
+            
           </div>
         </div>
       </main>

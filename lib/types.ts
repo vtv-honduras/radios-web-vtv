@@ -27,16 +27,16 @@ export interface Station {
   tags?: string[]
   // Nuevos campos
   generalDescription?: string
-  hosts?: string // Locutores generales como texto libre
+  hosts?: string
   programming?: ProgramSegment[]
 }
 
 export interface ProgramSegment {
   id: string
-  horaInicio: string // "08:00 AM"
-  horaFin: string // "10:00 AM"
-  segmento: string // "Mañanas alegres"
-  locutores: string // "Con Juan Horlando y Xiomara Castro"
+  horaInicio: string
+  horaFin: string
+  segmento: string 
+  locutores: string 
 }
 
 export interface AdminUser {

@@ -15,13 +15,9 @@ export default function StationPage({ params }: { params: Promise<{ id: string }
   const [loading, setLoading] = useState(true)
   const { setStations: setAudioStations, stations } = useAudio()
 
-  // Asegurar scroll al top al cargar la página
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
-
-  // Asegura que el AudioProvider tenga la lista completa de estaciones
-  // para que el reproductor flotante (next/previous) funcione correctamente.
   useEffect(() => {
     if (stations.length === 0) {
       const fetchAllStationsForProvider = async () => {
@@ -35,7 +31,6 @@ export default function StationPage({ params }: { params: Promise<{ id: string }
       fetchAllStationsForProvider()
     }
   }, [stations.length, setAudioStations])
-  // Carga los detalles de la estación actual
   useEffect(() => {
     const fetchStation = async () => {
       setLoading(true)
@@ -59,7 +54,6 @@ export default function StationPage({ params }: { params: Promise<{ id: string }
           <div className="flex items-center justify-center min-h-[400px]">
             <div className="flex items-center space-x-2">
               <Loader2 className="h-6 w-6 animate-spin text-gray-700 dark:text-gray-300" />
-              <span className="text-gray-700 dark:text-gray-300">Cargando estación...</span>
             </div>
           </div>
         </main>
