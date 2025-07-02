@@ -1,5 +1,5 @@
 "use client";
-import type React from "react";
+import React from "react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -10,12 +10,12 @@ import { getStationById, updateStation } from "@/lib/station.service";
 import type { Station, ProgramSegment } from "@/lib/types";
 import { ProtectedRoute } from "@/components/protected-route";
 
-function EditStationPageContent({ params }: { params: { id: string } }) {
+export default function EditStationPageContent({ params }: { params: Promise<{ id: string }> }) {
+  const unwrappedParams = React.use(params)
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
   const [station, setStation] = useState<Station | null>(null);
-  const [programming, setProgramming] = useState<ProgramSegment[]>([]);
   const [newCoverImageFile, setNewCoverImageFile] = useState<File | null>(null);
 
   const [formData, setFormData] = useState<Omit<Station, "id">>({
@@ -43,7 +43,7 @@ function EditStationPageContent({ params }: { params: { id: string } }) {
   useEffect(() => {
     const fetchStation = async () => {
       try {
-        const fetchedStation = await getStationById(params.id);
+        const fetchedStation = await getStationById(unwrappedParams.id);
         if (fetchedStation) {
           setStation(fetchedStation);
           setFormData({
@@ -76,7 +76,7 @@ function EditStationPageContent({ params }: { params: { id: string } }) {
     };
 
     fetchStation();
-  }, [params.id]);
+  }, [unwrappedParams.id]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -96,7 +96,7 @@ function EditStationPageContent({ params }: { params: { id: string } }) {
       };
 
       await updateStation(
-        params.id,
+        unwrappedParams.id,
         updateData,
         newCoverImageFile || undefined
       );
@@ -216,7 +216,8 @@ function EditStationPageContent({ params }: { params: { id: string } }) {
   }
 
   return (
-    <main className="container mx-auto px-4 py-8">
+    <ProtectedRoute>
+         <main className="container mx-auto px-4 py-8">
       <div className="max-w-4xl mx-auto">
         <div className="flex items-center gap-4 mb-8">
           <Link
@@ -649,17 +650,9 @@ function EditStationPageContent({ params }: { params: { id: string } }) {
         </form>
       </div>
     </main>
+    </ProtectedRoute>
+ 
   );
 }
 
-export default function EditStationPage({
-  params,
-}: {
-  params: { id: string };
-}) {
-  return (
-    <ProtectedRoute>
-      <EditStationPageContent params={params} />
-    </ProtectedRoute>
-  );
-}
+

@@ -58,7 +58,7 @@ export default function HomePage() {
 
         {featuredStation && (
           <section className="mb-12 w-full lg:w-1/2 md:w-3/4 mx-auto">
-            <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">
+            <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-white text-center md:text-left">
               Estación Destacada
             </h2>
             <FeaturedStation station={featuredStation} />

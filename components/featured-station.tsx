@@ -31,7 +31,6 @@ export function FeaturedStation({ station }: FeaturedStationProps) {
   return (
     <div className="bg-gradient-to-r from-primary/10 to-primary/5 dark:from-primary/20 dark:to-primary/10 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700">
       <div className="flex flex-col md:flex-row">
-        {/* Imagen sin overlay ni hover effects */}
         <div className="relative w-full md:w-1/3 aspect-square md:aspect-auto">
           <Image
             src={station.coverImage || "/placeholder.svg?height=400&width=400"}
@@ -67,19 +66,19 @@ export function FeaturedStation({ station }: FeaturedStationProps) {
             )}
           </div>
 
-          <div className="grid grid-cols-2 gap-4 w-full max-w-md">
+          <div className="grid grid-cols-2 gap-2 w-full max-w-md">
             <button
               onClick={handlePlayPause}
-              className="flex items-center justify-center gap-2 px-6 py-3 bg-primary hover:bg-primary/90 text-white rounded-full transition-colors w-full"
+              className="flex items-center justify-center gap-2 px-4 py-3 bg-primary hover:bg-primary/90 text-white rounded-full transition-colors w-full"
             >
               {isCurrentlyPlaying ? (
                 <>
-                  <Pause size={20} />
+                  <Pause size={15} />
                   <span>Pausar</span>
                 </>
               ) : (
                 <>
-                  <Play size={20} />
+                  <Play size={15} />
                   <span>Play</span>
                 </>
               )}
@@ -89,7 +88,7 @@ export function FeaturedStation({ station }: FeaturedStationProps) {
               href={`/estacion/${station.id}`}
               className="flex items-center justify-center gap-2 px-6 py-3 border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-full transition-colors w-full"
             >
-              <Eye size={20} />
+              <Eye size={15} />
               <span>Ver más</span>
             </Link>
           </div>
