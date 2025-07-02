@@ -65,12 +65,13 @@ export function StationDetails({ station }: StationDetailsProps) {
 
   return (
     <div className="max-w-4xl mx-auto pb-32">
+      {/* Banner publicitario 
       <div className="mb-8">
         <AdBanner adSlot="1111111111" className="text-center" />
       </div>
-
+      */}
       <div className="flex flex-col md:flex-row gap-8">
-        <div className="relative w-full md:w-1/3 aspect-square rounded-lg overflow-hidden shadow-md">
+        <div className="relative w-full md:w-1/3 aspect-square rounded-lg overflow-hidden">
           <Image
             src={station.coverImage || "/placeholder.svg?height=400&width=400"}
             alt={station.name}
@@ -116,7 +117,7 @@ export function StationDetails({ station }: StationDetailsProps) {
             </div>
           )}
 
-          <div className="flex flex-wrap gap-4 mb-6">
+          <div className="flex flex-wrap gap-4 mb-6 md:justify-start justify-center">
             <button
               onClick={handlePlayPause}
               className="px-8 py-3 bg-primary hover:bg-primary/90 text-white rounded-full flex items-center space-x-2"
@@ -138,7 +139,7 @@ export function StationDetails({ station }: StationDetailsProps) {
           {/* Tags */}
           {station.tags && station.tags.length > 0 && (
             <div className="mb-6">
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-1">
                 {station.tags.map((tag) => (
                   <span
                     key={tag}
@@ -153,11 +154,11 @@ export function StationDetails({ station }: StationDetailsProps) {
         </div>
       </div>
 
-      {/* Anuncio nativo */}
+      {/* Anuncio nativo 
       <div className="my-12">
         <AdNative adSlot="2222222222" className="rounded-lg overflow-hidden" />
       </div>
-
+      */}
       {/* Descripción General */}
       <div className="mt-12">
         <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">
@@ -182,13 +183,11 @@ export function StationDetails({ station }: StationDetailsProps) {
       </div>
 
       {/* Sección de Programación - Solo visualización */}
-      <div className="mt-12">
-        <h2 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white">
-          Programación
-        </h2>
-
-        {/* Lista de segmentos - Solo lectura */}
-        {station.programming && station.programming.length > 0 ? (
+      {station.programming && station.programming.length > 0 && (
+        <div className="mt-12">
+          <h2 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white">
+            Programación
+          </h2>
           <div className="space-y-4">
             {station.programming.map((segment) => (
               <div
@@ -212,12 +211,8 @@ export function StationDetails({ station }: StationDetailsProps) {
               </div>
             ))}
           </div>
-        ) : (
-          <div className="text-center py-8 text-gray-500 dark:text-gray-400">
-            <p>No hay segmentos de programación disponibles</p>
-          </div>
-        )}
-      </div>
+        </div>
+      )}
 
       {/* Redes sociales */}
       {station.social && Object.values(station.social).some((url) => !!url) && (
