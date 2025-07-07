@@ -90,7 +90,7 @@ export default function ContactPage() {
                       Dirección
                     </h3>
                     <p className="text-gray-600 dark:text-gray-300">
-                      Colonia El Trapiche, contigo a Mudanzas Internacionales
+                      Colonia El Trapiche, contiguo a Mudanzas Internacionales
                       <br />
                       Tegucigalpa, Honduras
                     </p>
