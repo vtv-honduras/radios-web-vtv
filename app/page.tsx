@@ -2,7 +2,7 @@
 
 import { RadioStationGrid } from "@/components/radio-station-grid";
 import { FeaturedStation } from "@/components/featured-station";
-import { AdBanner, AdNative } from "@/components/ad-banner";
+//import { AdBanner, AdNative } from "@/components/ad-banner";
 import { Footer } from "@/components/footer";
 import { useEffect, useState } from "react";
 import { getAllStations } from "@/lib/station.service";
@@ -51,7 +51,7 @@ export default function HomePage() {
 
   return (
     <>
-      <main className="container mx-auto px-4 py-8 pb-32">
+      <main className="container mx-auto px-4 py-8 md:pb-32">
         <h1 className="text-3xl font-bold text-center mb-8 text-gray-900 dark:text-white">
           Radio Stream
         </h1>

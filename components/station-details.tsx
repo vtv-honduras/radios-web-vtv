@@ -64,7 +64,7 @@ export function StationDetails({ station }: StationDetailsProps) {
   };
 
   return (
-    <div className="max-w-4xl mx-auto pb-32">
+    <div className="max-w-4xl mx-auto md:pb-32">
       {/* Banner publicitario 
       <div className="mb-8">
         <AdBanner adSlot="1111111111" className="text-center" />
@@ -79,17 +79,18 @@ export function StationDetails({ station }: StationDetailsProps) {
             className="object-fill"
           />
         </div>
+        
 
         <div className="flex-1">
           <h1 className="text-3xl font-bold mb-4 md:mb-2 text-gray-900 dark:text-white text-center md:text-left">
             {station.name}
           </h1>
-          <p className="text-xl text-gray-600 dark:text-gray-300 mb-4">
+          <p className="text-xl text-gray-600 dark:text-gray-300 mb-4 text-center md:text-left">
             {station.genre}
           </p>
 
-          {/* Información adicional */}
-          <div className="flex flex-wrap gap-4 mb-6">
+           {/* Información adicional */}
+          <div className="flex flex-wrap gap-4 mb-6 justify-center md:justify-start">
             {station.frequency && (
               <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400">
                 <Radio size={16} />
@@ -109,6 +110,7 @@ export function StationDetails({ station }: StationDetailsProps) {
               <span>24/7</span>
             </div>
           </div>
+          
 
           {hasError && (
             <div className="mb-6 p-3 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 rounded-md flex items-center gap-2">
@@ -161,18 +163,18 @@ export function StationDetails({ station }: StationDetailsProps) {
       */}
       {/* Descripción General */}
       <div className="mt-12">
-        <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">
+        <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-white text-center md:text-left">
           Acerca de esta estación
         </h2>
-        <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
+        <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-5">
           {station.description ||
             "Esta estación de radio ofrece una selección de música las 24 horas del día, los 7 días de la semana. Sintoniza para disfrutar de la mejor programación musical y contenido exclusivo."}
         </p>
 
         {/* Locutores generales */}
         {station.locutores && (
-          <div className="mt-4">
-            <h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-white">
+          <div className="mt-6">
+            <h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-white text-center md:text-left">
               Nuestros Locutores
             </h3>
             <p className="text-gray-600 dark:text-gray-300">
@@ -184,8 +186,8 @@ export function StationDetails({ station }: StationDetailsProps) {
 
       {/* Sección de Programación - Solo visualización */}
       {station.programming && station.programming.length > 0 && (
-        <div className="mt-12">
-          <h2 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white">
+        <div className="mt-6">
+          <h2 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white text-center md:text-left">
             Programación
           </h2>
           <div className="space-y-4">
@@ -217,7 +219,7 @@ export function StationDetails({ station }: StationDetailsProps) {
       {/* Redes sociales */}
       {station.social && Object.values(station.social).some((url) => !!url) && (
         <div className="mt-12">
-          <h2 className="text-2xl font-semibold mb-5 text-gray-900 dark:text-white">
+          <h2 className="text-2xl font-semibold mb-5 text-gray-900 dark:text-white text-center md:text-left">
             Síguenos en Redes Sociales
           </h2>
           <div className="flex flex-wrap gap-4 justify-center">

@@ -29,7 +29,7 @@ export function RadioStationCard({ station }: RadioStationCardProps) {
   }
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 border border-gray-200 dark:border-gray-700">
+    <div className="bg-gray-200 dark:bg-gray-800 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 border border-gray-200 dark:border-gray-700">
       {/* Imagen sin overlay ni hover effects */}
       <div className="relative aspect-square">
         <Image
