@@ -5,7 +5,7 @@ export function Footer() {
         <div className="text-center">
           <p className="text-gray-600 dark:text-gray-400 text-sm">
             © Todos los derechos reservados - <span className="font-semibold">CORPOCENTRO</span> | Powered by{" "}
-            <span className="font-semibold text-primary">DevsLS</span>
+            <span className="font-semibold text-primary">Devsls</span>
           </p>
         </div>
       </div>
