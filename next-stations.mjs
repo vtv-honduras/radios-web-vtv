@@ -1,5 +1,4 @@
-
-module.exports.stations = [
+export const stations = [
   {
     id: "station-1751383690306", 
     slug: "picosa",

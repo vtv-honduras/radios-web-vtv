@@ -1,5 +1,5 @@
 // next-config.mjs
-import { stations } from './next-stations.cjs';
+import { stations } from './next-stations.mjs';
 
 /** normaliza texto a slug simple (sin tildes, minúsculas, con guiones) */
 function normalize(text) {
@@ -75,9 +75,6 @@ const nextConfig = {
         { source: "/mía", destination: `/estacion/${mia}`, permanent: true }
       );
     }
-
-    // 4) Normalizar trailing slash → sin slash (opcional)
-    rules.push({ source: "/:path*/", destination: "/:path*", permanent: true });
 
     return rules;
   },
