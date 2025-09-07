@@ -1,5 +1,5 @@
 // next-config.mjs
-import { stations } from "./next-stations.mjs";
+import { stations } from './next-stations.cjs';
 
 /** normaliza texto a slug simple (sin tildes, minúsculas, con guiones) */
 function normalize(text) {
